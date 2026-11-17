@@ -18,11 +18,11 @@ chỉ giải bài toán trị riêng của ma trận 2 × 2, không phải hàm 
 Pillow đọc/ghi ảnh và vẽ; Matplotlib tạo hình tổng quan; Tkinter tạo giao diện.
 Không import `cv2`, YOLO, SciPy hoặc scikit-image trong phần xử lý.
 
-Các sửa đổi với Canny gốc:
+Chi tiết cài đặt Canny hiện tại trong `filters.py`, `processing.py` và `canny.py`:
 
-- Thống nhất `X` theo cột, `Y` theo hàng, sửa cặp láng giềng chéo của NMS.
+- Quy ước `X` theo cột, `Y` theo hàng; NMS so sánh các láng giềng theo hướng gradient.
 - Padding lặp giá trị mép để tránh biên giả do đệm bằng 0.
-- Tương quan giữ quy ước dấu của kernel cũ. Hai đạo hàm cùng đảo dấu so với
+- Áp mặt nạ theo phép tương quan. Hai đạo hàm cùng đảo dấu so với
   tích chập toán học, không đổi hướng biên modulo 180°.
 - Lặp qua các phần tử kernel và xử lý cả mảng ảnh để giảm chi phí vòng lặp.
 - Hysteresis đánh dấu khi đưa pixel vào stack, tránh đưa lặp nhiều lần.
@@ -257,5 +257,9 @@ Mã baseline đã có đủ các khối. Tiếp tục theo các mốc có thể 
 7. Chuẩn bị demo và báo cáo: giả định, công thức, ảnh trung gian, kết quả,
    lỗi còn tồn tại, phạm vi áp dụng.
 
-Ghi rõ phần Canny kế thừa và phần sửa/bổ sung. Không tuyên bố hệ thống xử lý
-linh kiện chồng lấp hoặc đạt độ chính xác tổng quát khi chưa kiểm chứng.
+Khi trình bày, mô tả các bước Canny được cài đặt thủ công bằng Python/NumPy,
+vai trò của từng tệp và phần tích hợp với hệ thống đếm linh kiện. Phân biệt
+việc cài đặt thủ công với nguồn gốc mã nguồn: giữ ghi nhận phần kế thừa và
+phần sửa/bổ sung, tham khảo [tài liệu nguồn](ORIGINAL_README.md) và
+[LICENSE](../LICENSE). Không tuyên bố hệ thống xử lý linh kiện chồng lấp
+hoặc đạt độ chính xác tổng quát khi chưa kiểm chứng.

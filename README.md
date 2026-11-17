@@ -6,6 +6,24 @@ Pillow dùng cho đọc/ghi ảnh, vẽ kết quả; Matplotlib trình bày các
 Tkinter cung cấp giao diện desktop. Không gọi hàm xử lý ảnh của OpenCV,
 không dùng YOLO, không dùng mô hình học sâu. PyTorch không cần thiết cho baseline này.
 
+## Cài đặt Canny thủ công trong dự án
+
+Pipeline Canny được cài đặt trực tiếp bằng Python và NumPy: tạo kernel đạo hàm
+Gaussian, tính gradient, lượng tử hóa hướng, làm mảnh biên bằng NMS và nối biên
+bằng ngưỡng kép kết hợp hysteresis. Chương trình không gọi `cv2.Canny()` hoặc
+một hàm phát hiện biên Canny có sẵn trong thư viện xử lý ảnh.
+
+- `source_code/filters.py`: tính kích thước kernel, tạo đạo hàm Gaussian và áp mặt nạ.
+- `source_code/processing.py`: tính độ lớn/hướng gradient, NMS và hysteresis.
+- `source_code/canny.py`: ghép các bước và trả về ảnh trung gian.
+- `source_code/pipeline.py`: kết hợp Canny với tách vùng, đặc trưng, phân loại và đếm.
+
+“Cài đặt thủ công” mô tả cách chương trình thực hiện thuật toán. Về nguồn gốc
+mã nguồn, dự án phát triển từ phần Canny có sẵn và có các chỉnh sửa, bổ sung
+cho hệ thống đếm linh kiện. Tài liệu nguồn được lưu tại
+[docs/ORIGINAL_README.md](docs/ORIGINAL_README.md); thông báo bản quyền được
+giữ trong [LICENSE](LICENSE).
+
 Đã có một pipeline chạy được, bộ luật ban đầu và công cụ đánh giá. Độ chính xác
 trên ảnh mới vẫn cần được xác nhận bằng tập ảnh chụp độc lập.
 
@@ -30,7 +48,7 @@ manual-canny-edge-detector-main/
 │   ├── features.py               # PCA, bán kính biên ngoài, lỗ giữa
 │   ├── classifier.py             # Luật phân loại + nhãn unknown
 │   ├── pipeline.py               # Ghép hệ thống, xuất ảnh/JSON/CSV
-│   ├── main.py                   # CLI; giữ chế độ xuất biên cũ
+│   ├── main.py                   # CLI phân loại và xuất 24 ảnh Canny để so sánh
 │   ├── demo.py                   # Giao diện desktop
 │   └── evaluate.py               # IoU, precision/recall/F1, MAE, confusion matrix
 ├── scripts/
@@ -77,7 +95,11 @@ Chạy nhiều ảnh cùng phần mở rộng:
 .\.venv\Scripts\python.exe source_code/main.py --mode parts --input_folder input --input_ext jpg --output results/demo --config configs/default.json
 ```
 
-Chế độ Canny cũ vẫn chạy được; chế độ này quét các sigma/ngưỡng cố định như mã gốc:
+Chế độ `edges` xuất 24 ảnh cho mỗi ảnh đầu vào: thử 3 giá trị sigma
+(`0.5`, `1.0`, `2.0`), mỗi giá trị xuất 6 ảnh trung gian và 2 ảnh biên
+với các cặp ngưỡng `(cao, thấp)` là `(100, 50)` và `(150, 75)`.
+Chế độ này phục vụ quan sát và so sánh tham số; giao diện và chế độ `parts`
+dùng một cấu hình cho mỗi lần phân tích.
 
 ```powershell
 .\.venv\Scripts\python.exe source_code/main.py --mode edges --input_folder input --output_folder results/edges --input_ext jpg --output_ext png
@@ -105,6 +127,3 @@ giải thích đặc trưng và đọc kết quả nằm trong [docs/HUONG_DAN.m
 - Biên ngoài cần khép kín. Closing lớn có thể nối nhầm hai linh kiện gần nhau.
 - Nhãn `unknown` giữ các trường hợp chưa đủ điều kiện phân loại; vẫn được tính vào tổng.
 - Các ngưỡng trong `configs/default.json` là giá trị khởi đầu, cần kiểm tra trên ảnh của bạn.
-
-Phần Canny được phát triển từ mã nguồn có sẵn trong dự án; thông tin gốc
-được giữ tại `docs/ORIGINAL_README.md` và `LICENSE`.

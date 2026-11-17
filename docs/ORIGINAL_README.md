@@ -1,5 +1,10 @@
 # Canny Edge Detection from Scratch (upstream README)
 
+> Đây là bản lưu tài liệu của nguồn Canny ban đầu để ghi nhận xuất xứ mã nguồn.
+> Hướng dẫn chạy và mô tả bản cài đặt hiện tại nằm trong [README của dự án](../README.md)
+> và [hướng dẫn hệ thống](HUONG_DAN.md). Các lệnh và cấu trúc bên dưới thuộc
+> tài liệu nguồn, không phải hướng dẫn chạy phiên bản hiện tại.
+
 A comprehensive Python implementation of the Canny Edge Detection pipeline. This project demonstrates the fundamental steps of edge extraction by implementing each stage manually, avoiding high-level library shortcuts like `cv2.Canny()`.
 
 ## 🛠️ The Pipeline
