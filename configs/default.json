@@ -1,8 +1,8 @@
 {
   "sigma": 1.0,
   "gaussian_tail": 0.01,
-  "low_threshold": 40,
-  "high_threshold": 90,
+  "low_threshold": 30,
+  "high_threshold": 70,
   "closing_iterations": 1,
   "min_area": 200,
   "max_area_fraction": 0.45,

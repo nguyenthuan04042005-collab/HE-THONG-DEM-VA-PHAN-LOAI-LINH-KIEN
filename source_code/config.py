@@ -10,8 +10,8 @@ import math
 class Config:
     sigma: float = 1.0
     gaussian_tail: float = 0.01
-    low_threshold: float = 40.0
-    high_threshold: float = 90.0
+    low_threshold: float = 30.0
+    high_threshold: float = 70.0
     closing_iterations: int = 1
     min_area: int = 200
     max_area_fraction: float = 0.45

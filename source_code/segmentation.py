@@ -10,6 +10,9 @@ from dataclasses import dataclass
 import numpy as np
 from morphology import close
 
+BORDER_MARGIN = 3     # cach mep < 3 px coi la cham mep (Canny luon bo vien 1 px)
+MIN_BBOX_FILL = 0.08  # vung chiem < 8% khung bao la soi bien ho, khong phai vat
+
 
 @dataclass
 class Component:
@@ -89,8 +92,12 @@ def segment_objects(edges, config):
             continue
         y0, x0 = pixels.min(axis=0).tolist()
         y1, x1 = (pixels.max(axis=0) + 1).tolist()
-        if x0 == 0 or y0 == 0 or x1 == width or y1 == height:
+        if (x0 < BORDER_MARGIN or y0 < BORDER_MARGIN
+                or x1 > width - BORDER_MARGIN or y1 > height - BORDER_MARGIN):
             warnings.append("Rejected a component touching the image border")
+            continue
+        if len(pixels) < MIN_BBOX_FILL * (x1 - x0) * (y1 - y0):
+            warnings.append("Rejected a thin open-edge fragment")
             continue
         if len(pixels) > config.max_area_fraction * filled.size:
             warnings.append("Rejected an oversized component; inspect broken/merged edges")
