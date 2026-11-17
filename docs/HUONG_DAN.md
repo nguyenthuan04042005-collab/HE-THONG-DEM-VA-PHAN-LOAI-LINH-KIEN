@@ -42,7 +42,9 @@ sinh biên; cần xem ảnh biên trước khi tin kết quả đếm.
 3. Flood fill nền từ bốn mép ảnh theo liên thông 4.
 4. Đảo mask nền ngoài để nhận các vùng bị đường biên bao kín, gồm cả pixel biên.
 5. Gán nhãn liên thông 8 bằng BFS để mỗi vùng bao ngoài nhận một ID.
-6. Loại vùng quá nhỏ, quá lớn hoặc chạm mép ảnh.
+6. Loại vùng quá nhỏ, quá lớn, chạm mép ảnh (cách mép dưới 3 px, vì Canny luôn
+   bỏ viền 1 px) hoặc chỉ là sợi biên hở (chiếm dưới 8% khung bao của nó).
+   Linh kiện bị mép ảnh cắt mất một phần vì vậy không được đếm.
 
 Flood fill dùng các đoạn liên tiếp trên hàng để giảm số phần tử phải duyệt.
 Gán nhãn dùng BFS tường minh để bạn dễ giải thích và kiểm tra.
